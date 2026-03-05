@@ -1,4 +1,3 @@
-
 let customers = [
   {
     id: 1,
@@ -16,34 +15,9 @@ let customers = [
 
 function checkBalance(id) {
   const customer = customers.find((customer) => customer.id === id);
-  console.log(customer);
+  console.log(customer)
 }
-function withdraw(id, amount) {
-  customers = customers.map((customer) => {
-    if (customer.id === id) {
 
-      if (customer.balance < amount) {
-        console.log("Insufficient balance");
-        return customer;
-      }
-
-      return {
-        ...customer,
-        balance: customer.balance - amount,
-        transactions: [
-          ...customer.transactions,
-          {
-            type: "debit",
-            amount: amount,
-            date: Date.now(),
-          },
-        ],
-      };
-    } else {
-      return customer;
-    }
-  });
-}
 function deposit(id, amount) {
   customers = customers.map((customer) => {
     if (customer.id === id) {
@@ -65,18 +39,40 @@ function deposit(id, amount) {
   });
 }
 
-function showTransactions(id) {
-  const customer = customers.find((customer) => customer.id === id);
-
-  console.log(`Transactions for ${customer.name}`);
-  customer.transactions.forEach((t) => {
-    console.log(`${t.type} - ${t.amount}`);
+function withdraw(id, amount) {
+  customers = customers.map((customer) => {
+    if (customer.id === id) {
+      if (customer.balance < amount) {
+        console.log("Insufficient Funds");
+        return customer
+      } else {
+        return {
+          ...customer,
+          balance: customer.balance - amount,
+          transactions: [
+            ...customer.transactions,
+            {
+              type: "debit",
+              amount: amount,
+              date: Date.now(),
+            },
+          ],
+        };
+      }
+    } else {
+      return customer;
+    }
   });
 }
 
+function showTransactions(id){
+const customer = customers.find(customer=>customer.id===id)
+console.table(customer.transactions)
+}
 deposit(1, 1500);
-withdraw(1,500)
-checkBalance(1)
+checkBalance(1);
 deposit(1, 1000);
-checkBalance(1)
+checkBalance(1);
+withdraw(1,20000)
+checkBalance(1);
 showTransactions(1)
